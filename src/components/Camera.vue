@@ -1,5 +1,5 @@
 <template>
-    <video v-show="isPlaying" autoplay ref="video" id="video"></video>
+    <video autoplay ref="video" id="video"></video>
 
     <div>
         <slot></slot>
@@ -14,7 +14,14 @@ import { defineComponent, onMounted, ref } from "vue";
 export default defineComponent({
     name: "Camera",
     components: {},
-    emits: [],
+    emits: [
+        "started",
+        "stopped",
+        "paused",
+        "resumed",
+        "camera-change",
+        "snapshot",
+    ],
     props: {
         width: {
             type: Number,
@@ -33,7 +40,7 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props) {
+    setup(props, { emit }) {
         onMounted(() => {
             if (props.autoplay) start();
         });
@@ -47,7 +54,6 @@ export default defineComponent({
             audio: false,
         };
 
-        const isPlaying = ref(false);
         const video = ref<HTMLVideoElement>();
         const canvas = ref<HTMLCanvasElement>();
         const stream = ref<MediaStream>();
@@ -55,17 +61,21 @@ export default defineComponent({
         const devices = (): Promise<MediaDeviceInfo[]> =>
             navigator.mediaDevices.enumerateDevices();
 
-        const start = async (deviceID?: string) => {
+        const start = async (): Promise<void> => {
             if (!video.value) throw new Error("Video ref is null");
-            stream.value = await navigator.mediaDevices.getUserMedia({
-                ...constraints,
-            });
 
-            video.value.onplay = () => (isPlaying.value = true);
+            stream.value = await navigator.mediaDevices.getUserMedia(
+                constraints
+            );
             video.value.srcObject = stream.value;
+
+            emit("started");
         };
 
-        const snapshot = (type = "image/png"): string => {
+        const snapshot = (
+            type = "image/png",
+            quality?: any
+        ): Promise<Blob | null> => {
             if (!video.value) throw new Error("Video ref is null");
             if (!canvas.value) throw new Error("Canvas ref is null");
 
@@ -79,11 +89,36 @@ export default defineComponent({
                 .getContext("2d")
                 ?.drawImage(video.value, 0, 0, width, height);
 
-            return canvas.value.toDataURL(type);
+            return new Promise((resolve) => {
+                canvas.value!.toBlob(
+                    (blob: Blob | null) => {
+                        emit("snapshot", blob);
+                        resolve(blob);
+                    },
+                    type,
+                    quality
+                );
+            });
         };
 
-        const stop = () =>
+        const changeCamera = (deviceID: string): void => {
+            emit("camera-change", deviceID);
+        };
+
+        const resume = (): void => {
+            video.value?.play();
+            emit("resumed");
+        };
+
+        const pause = (): void => {
+            video.value?.pause();
+            emit("paused");
+        };
+
+        const stop = (): void => {
             stream.value?.getTracks().forEach((track) => track.stop());
+            emit("stopped");
+        };
 
         return {
             start,
@@ -91,9 +126,11 @@ export default defineComponent({
             constraints,
             video,
             snapshot,
-            isPlaying,
             canvas,
             devices,
+            pause,
+            resume,
+            changeCamera,
         };
     },
 });
