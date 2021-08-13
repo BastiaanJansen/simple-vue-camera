@@ -78,13 +78,13 @@ export default defineComponent({
         };
 
         const start = async (): Promise<void> => {
-            if (!video.value) throw new Error("Video ref is null");
-
             emit("loading");
 
             stream.value = await navigator.mediaDevices.getUserMedia(
                 constraints
             );
+
+            if (!video.value) throw new Error("Video ref is null");
             video.value.srcObject = stream.value;
 
             emit("started");
@@ -100,12 +100,8 @@ export default defineComponent({
 
             const { width, height } = resolution;
 
-            Object.assign(canvas.value, {
-                width,
-                height,
-            });
-
-            console.log(width);
+            canvas.value.width = width;
+            canvas.value.height = height;
 
             canvas.value
                 .getContext("2d")
@@ -128,13 +124,6 @@ export default defineComponent({
             constraints.video.deviceId.exact = deviceID;
             start();
             emit("camera-change", deviceID);
-        };
-
-        const changeMicrophone = (deviceID: string): void => {
-            stop();
-            constraints.audio.deviceId.exact = deviceID;
-            start();
-            emit("microphone-change", deviceID);
         };
 
         const resume = (): void => {
@@ -162,7 +151,6 @@ export default defineComponent({
             pause,
             resume,
             changeCamera,
-            changeMicrophone,
             stream,
         };
     },
