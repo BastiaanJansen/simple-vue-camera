@@ -1,35 +1,38 @@
 <template>
-    <video autoplay ref="video" id="video"></video>
+    <div id="camera-container">
+        <video autoplay ref="video" id="video"></video>
 
-    <div>
-        <slot></slot>
+        <div id="slot-container">
+            <slot></slot>
+        </div>
     </div>
 
     <canvas ref="canvas" id="canvas"></canvas>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, onUnmounted, PropType, ref } from "vue";
+import { MediaDeviceKind, Resolution } from "./index";
 
 export default defineComponent({
     name: "Camera",
     components: {},
     emits: [
+        "loading",
         "started",
         "stopped",
         "paused",
         "resumed",
         "camera-change",
+        "microphone-change",
         "snapshot",
     ],
     props: {
-        width: {
-            type: Number,
-            required: true,
-        },
-        height: {
-            type: Number,
-            required: true,
+        resolution: {
+            type: Object as PropType<Resolution>,
+            default: () => {
+                return { width: 1920, height: 1080 };
+            },
         },
         facingMode: {
             type: String,
@@ -39,30 +42,45 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        constraints: {
+            type: Object,
+            required: false,
+        },
     },
     setup(props, { emit }) {
         onMounted(() => {
+            if (!navigator.mediaDevices)
+                throw new Error("Media devices not available");
             if (props.autoplay) start();
         });
 
-        const constraints = {
-            video: {
-                width: { ideal: props.width },
-                height: { ideal: props.height },
-                facingMode: props.facingMode,
-            },
-            audio: false,
-        };
+        onUnmounted(() => stop());
 
         const video = ref<HTMLVideoElement>();
         const canvas = ref<HTMLCanvasElement>();
         const stream = ref<MediaStream>();
 
-        const devices = (): Promise<MediaDeviceInfo[]> =>
-            navigator.mediaDevices.enumerateDevices();
+        const constraints = props.constraints || {
+            video: {
+                width: { ideal: props.resolution.width },
+                height: { ideal: props.resolution.height },
+                facingMode: props.facingMode,
+                deviceId: {},
+            },
+            audio: false,
+        };
+
+        const devices = async (
+            kinds: MediaDeviceKind[] = ["audioinput", "videoinput"]
+        ): Promise<MediaDeviceInfo[]> => {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            return devices.filter((device) => kinds.includes(device.kind));
+        };
 
         const start = async (): Promise<void> => {
             if (!video.value) throw new Error("Video ref is null");
+
+            emit("loading");
 
             stream.value = await navigator.mediaDevices.getUserMedia(
                 constraints
@@ -73,18 +91,21 @@ export default defineComponent({
         };
 
         const snapshot = (
+            resolution: Resolution = props.resolution,
             type = "image/png",
             quality?: number
         ): Promise<Blob | null> => {
             if (!video.value) throw new Error("Video ref is null");
             if (!canvas.value) throw new Error("Canvas ref is null");
 
-            const { videoWidth: width, videoHeight: height } = video.value;
+            const { width, height } = resolution;
 
             Object.assign(canvas.value, {
                 width,
                 height,
             });
+
+            console.log(width);
 
             canvas.value
                 .getContext("2d")
@@ -103,7 +124,17 @@ export default defineComponent({
         };
 
         const changeCamera = (deviceID: string): void => {
-            emit("camera-change", { deviceID });
+            stop();
+            constraints.video.deviceId.exact = deviceID;
+            start();
+            emit("camera-change", deviceID);
+        };
+
+        const changeMicrophone = (deviceID: string): void => {
+            stop();
+            constraints.audio.deviceId.exact = deviceID;
+            start();
+            emit("microphone-change", deviceID);
         };
 
         const resume = (): void => {
@@ -124,7 +155,6 @@ export default defineComponent({
         return {
             start,
             stop,
-            constraints,
             video,
             snapshot,
             canvas,
@@ -132,12 +162,33 @@ export default defineComponent({
             pause,
             resume,
             changeCamera,
+            changeMicrophone,
+            stream,
         };
     },
 });
 </script>
 
 <style scoped>
+#camera-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#slot-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
+#video {
+    width: 100%;
+    height: 100%;
+}
+
 #canvas {
     display: none;
 }

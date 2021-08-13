@@ -1,13 +1,13 @@
 <template>
     <div id="camera-container">
         <camera
+            :width="300"
+            :height="140"
             ref="camera"
             @loading="logEvent('loading')"
             @started="logEvent('started')"
             autoplay
-        >
-            ksjdhks</camera
-        >
+        ></camera>
     </div>
 
     <img :src="currentSnapshot" />
@@ -64,10 +64,7 @@ export default defineComponent({
         const pause = () => camera.value?.pause();
         const resume = () => camera.value?.resume();
         const snapshot = async () => {
-            const blob = await camera.value?.snapshot({
-                width: 1280,
-                height: 720,
-            });
+            const blob = await camera.value?.snapshot();
             currentSnapshot.value = URL.createObjectURL(blob);
         };
 
@@ -96,9 +93,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-#camera-container {
-    width: 300px;
-    height: 300px;
-}
-</style>
+<style scoped></style>
