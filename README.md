@@ -23,8 +23,9 @@
 |   snapshot   | `resolution: Resolution`, `type: string`, `quality: number` | Creates a snapshot of the current video image                         |
 
 ### Events
+
 | Name          | Parameters         | Description                                      |
-|-:-:-----------|-:-:----------------|--------------------------------------------------|
+|:-------------:|:------------------:|--------------------------------------------------|
 | loading       |                    | Emitted when the camera is loading               |
 | started       |                    | Emitted when the camera is loaded and is visible |
 | stopped       |                    | Emitted when the camera has stopped              |
