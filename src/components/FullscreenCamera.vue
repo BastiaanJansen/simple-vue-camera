@@ -1,23 +1,45 @@
 <template>
-    <div class="w-full h-full">
-        <!-- <div class="w-full h-full bg-black"></div> -->
+    <img
+        :src="imageURL"
+        class="w-full h-full absolute z-10 border-8 border-white"
+        v-if="imageURL"
+    />
+    <div class="w-full h-full bg-black overflow-hidden">
         <camera :resolution="{ width: 375, height: 812 }" autoplay ref="camera">
-            <div class="w-full h-full flex flex-col auto-rows-min relative">
-                <div
-                    class="w-full h-full grid grid-cols-3 grid-rows-3 absolute"
-                >
+            <div class="w-full h-full flex flex-col relative">
+                <div class="h-full relative">
                     <div
-                        v-for="index in 9"
-                        :key="index"
-                        class="w-full h-full border-b-1 border-gray-400"
-                        :class="{ 'border-r-1': index % 3 !== 0 }"
-                    ></div>
+                        class="
+                            w-full
+                            h-full
+                            grid grid-cols-3 grid-rows-3
+                            absolute
+                        "
+                    >
+                        <div
+                            v-for="index in 9"
+                            :key="index"
+                            class="w-full h-full border-gray-400"
+                            :class="[
+                                { 'border-r-1': index % 3 !== 0 },
+                                { 'border-b-1': ![7, 8, 9].includes(index) },
+                            ]"
+                        ></div>
+                    </div>
                 </div>
-                <header></header>
 
                 <footer class="mt-auto relative">
                     <div
-                        class="relative w-full mb-3 h-20 flex justify-end"
+                        class="
+                            w-full
+                            mb-3
+                            h-20
+                            flex
+                            justify-end
+                            transform
+                            absolute
+                            -translate-y-full
+                        "
                         id="countdown-container"
                     >
                         <transition name="slide-back">
@@ -30,9 +52,15 @@
                                     absolute
                                 "
                                 v-if="hasDelay && countdownHasStarted"
-                                :key="countdown"
                             >
-                                {{ countdown }}<span class="text-3xl">s</span>
+                                <transition name="slide-back">
+                                    <span
+                                        :key="countdown"
+                                        class="absolute right-4"
+                                        >{{ countdown }}</span
+                                    >
+                                </transition>
+                                <span class="text-3xl">s</span>
                             </h1>
                         </transition>
                     </div>
@@ -56,6 +84,8 @@
                             "
                         >
                             <button
+                                :class="{ 'opacity-0': countdownHasStarted }"
+                                :disabled="countdownHasStarted"
                                 class="
                                     w-10
                                     h-10
@@ -66,6 +96,7 @@
                                     items-center
                                     overflow-hidden
                                     relative
+                                    transition
                                 "
                                 @click="cycleDelay"
                             >
@@ -94,10 +125,11 @@
                                     transition-all
                                     duration-500
                                     rounded-full
+                                    active:bg-gray-400
                                 "
                                 :class="[
                                     hasDelay && countdownHasStarted
-                                        ? 'w-7 h-7 bg-red-400'
+                                        ? 'w-7 h-7 bg-yellow-400'
                                         : 'w-12 h-12 bg-white',
                                 ]"
                                 v-on="
@@ -118,6 +150,8 @@
                             </button>
 
                             <button
+                                :class="{ 'opacity-0': countdownHasStarted }"
+                                :disabled="countdownHasStarted"
                                 class="
                                     w-10
                                     h-10
@@ -126,6 +160,7 @@
                                     flex
                                     justify-center
                                     items-center
+                                    transition
                                 "
                             >
                                 <font-awesome-icon
@@ -163,6 +198,7 @@ export default defineComponent({
         const countdown = ref(0);
         const countdownTimeout = ref();
         const countdownInterval = ref();
+        const imageURL = ref();
 
         const hasDelay = computed(() => delays[delay.value] !== 0);
         const countdownHasStarted = computed(
@@ -171,6 +207,7 @@ export default defineComponent({
 
         const snapshot = async () => {
             const blob = await camera.value?.snapshot();
+            imageURL.value = URL.createObjectURL(blob);
             console.log(blob);
         };
 
@@ -183,7 +220,7 @@ export default defineComponent({
             countdown.value = delays[delay.value];
 
             countdownInterval.value = setInterval(() => {
-                countdown.value--;
+                if (countdown.value > 1) countdown.value--;
             }, 1000);
 
             countdownTimeout.value = setTimeout(() => {
@@ -210,6 +247,7 @@ export default defineComponent({
             countdownTimeout,
             hasDelay,
             countdownHasStarted,
+            imageURL,
         };
     },
 });

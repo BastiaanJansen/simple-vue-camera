@@ -24,7 +24,6 @@ export default defineComponent({
         "paused",
         "resumed",
         "camera-change",
-        "microphone-change",
         "snapshot",
     ],
     props: {
@@ -62,8 +61,8 @@ export default defineComponent({
 
         const constraints = props.constraints || {
             video: {
-                width: { ideal: props.resolution.width },
-                height: { ideal: props.resolution.height },
+                width: props.resolution.width,
+                height: props.resolution.height,
                 facingMode: props.facingMode,
                 deviceId: {},
             },
@@ -85,6 +84,7 @@ export default defineComponent({
             );
 
             if (!video.value) throw new Error("Video ref is null");
+
             video.value.srcObject = stream.value;
 
             emit("started");
