@@ -35,6 +35,7 @@ export default defineComponent({
             if (!camera.value) return;
             try {
                 const devices: MediaDeviceInfo[] = await camera.value.devices();
+                console.log(devices);
             } catch (e) {
                 console.log(e);
             }

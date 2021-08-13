@@ -74,23 +74,24 @@ export default defineComponent({
 
         const snapshot = (
             type = "image/png",
-            quality?: any
+            quality?: number
         ): Promise<Blob | null> => {
             if (!video.value) throw new Error("Video ref is null");
             if (!canvas.value) throw new Error("Canvas ref is null");
 
-            const width = video.value.videoWidth;
-            const height = video.value.videoHeight;
+            const { videoWidth: width, videoHeight: height } = video.value;
 
-            canvas.value.width = width;
-            canvas.value.height = height;
+            Object.assign(canvas.value, {
+                width,
+                height,
+            });
 
             canvas.value
                 .getContext("2d")
                 ?.drawImage(video.value, 0, 0, width, height);
 
             return new Promise((resolve) => {
-                canvas.value!.toBlob(
+                canvas.value?.toBlob(
                     (blob: Blob | null) => {
                         emit("snapshot", blob);
                         resolve(blob);
@@ -102,7 +103,7 @@ export default defineComponent({
         };
 
         const changeCamera = (deviceID: string): void => {
-            emit("camera-change", deviceID);
+            emit("camera-change", { deviceID });
         };
 
         const resume = (): void => {
