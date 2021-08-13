@@ -19,7 +19,7 @@
 |     stop     |                                                             | Stops the camera                                                      |
 |     pause    |                                                             | Pauses the video stream                                               |
 |    resume    |                                                             | Resumes the video stream                                              |
-| changeCamera |                           deviceID                          | Changes the selected camera                                           |
+| changeCamera |                           `deviceID: string`                          | Changes the selected camera                                           |
 |   snapshot   | `resolution: Resolution`, `type: string`, `quality: number` | Creates a snapshot of the current video image                         |
 
 ### Events
