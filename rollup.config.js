@@ -1,8 +1,6 @@
 import vue from "rollup-plugin-vue";
 import ts from "rollup-plugin-typescript2";
-import css from "rollup-plugin-import-css";
-import resolve from "rollup-plugin-node-resolve";
-import { terser } from "rollup-plugin-terser";
+import postcss from "rollup-plugin-postcss";
 import pkg from "./package.json";
 
 function createEntry(options) {
@@ -21,9 +19,7 @@ function createEntry(options) {
                 compileTemplate: true,
             }),
             ts(),
-            css(),
-            resolve(),
-            terser(),
+            postcss(),
         ],
     };
 
@@ -32,15 +28,7 @@ function createEntry(options) {
 
 export default [
     createEntry({
-        file: pkg.browser,
-        format: "iife",
-    }),
-    createEntry({
-        file: pkg.module,
-        format: "es",
-    }),
-    createEntry({
         file: pkg.main,
-        format: "cjs",
+        format: "umd",
     }),
 ];
