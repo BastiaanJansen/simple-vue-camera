@@ -30,7 +30,6 @@ export default defineComponent({
     props: {
         resolution: {
             type: Object as PropType<Resolution>,
-            
             default: () => {
                 return { width: 1920, height: 1080 };
             },
@@ -159,7 +158,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 #camera-container {
     position: relative;
     width: 100%;

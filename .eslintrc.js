@@ -13,9 +13,10 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 2020,
     },
+    ignorePatterns: ["dist"],
     rules: {
         "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
         "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-        "css.lint.unknownAtRules": 0
+        "css.lint.unknownAtRules": 0,
     },
 };

@@ -10,22 +10,22 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
-        "declaration": true,
-        "declarationMap": true,
-        "declarationDir": "lib",
         "baseUrl": ".",
         "types": ["webpack-env"],
         "paths": {
             "@/*": ["src/*"]
         },
-        "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+        "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+        "declaration": true,
+        "declarationDir": "dist"
     },
     "include": [
         "src/**/*.ts",
         "src/**/*.tsx",
         "src/**/*.vue",
         "tests/**/*.ts",
-        "tests/**/*.tsx"
-    ],
+        "tests/**/*.tsx",
+        "src/components/index.js"
+, "index.ts", "types/types.d.ts"    ],
     "exclude": ["node_modules"]
 }
