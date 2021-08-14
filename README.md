@@ -13,6 +13,7 @@ A simple to use, but extensive, camera component for Vue 3 with Typescript suppo
     * [Basics](#basics)
     * [Snapshots](#snapshots)
     * [Camera](#camera)
+    * [Comonent information](#component-information)
 
 ## Installation
 
@@ -51,65 +52,15 @@ After registering the `Camera` component, you can use it as follows:
 <template>
     <camera :resolution="{ width: 375, height: 812 }" autoplay></camera>
 </template>
-
-<script lang="ts">
-import Camera from "simple-vue-camera-test";
-
-export default defineComponent({
-    setup() {
-        // Get a reference of the component
-        const camera = ref<InstanceType<typeof Camera>>();
-        
-        // Use camera reference to call functions
-        const snapshot = async () => {
-            const blob = camera.value?.snapshot();
-            const url = URL.createObjectURL(blob);
-        }
-        
-        return {
-            camera
-        }
-    }
-});
 ```
-The `Camera` component emits 7 different events.
+
+Use the available slot to overlay UI on top of the video feed:
 ```vue
 <template>
-    <camera
-        @loading="loading"
-        @started="started"
-        @stopped="stopped"
-        @paused="paused"
-        @resumed="resumed"
-        @camera-change="cameraChange"
-        @snapshot="snapshot"
-    ></camera>
+    <camera :resolution="{ width: 375, height: 812 }" autoplay>
+         <button>I'm on top of the video</button>
+    </camera>
 </template>
-
-<script lang="ts">
-import Camera from "simple-vue-camera-test";
-
-export default defineComponent({
-    setup() {
-        const loading = () => console.log("Camera is loading and will start any second");
-        const started = () => console.log("Camera has started");
-        const stopped = () => console.log("Camera has stopped");
-        const paused = () => console.log("Video feed has paused");
-        const resumed = () => console.log("Video feed has resumed");
-        const cameraChange = (deviceID: string) => console.log(`Camera has been changed to ${deviceID}`);
-        const snapshot = (blob: Blob) => console.log("A snapshot has been taken");
-        
-        return {
-            loading,
-            started,
-            stopped,
-            paused,
-            resumed,
-            cameraChange,
-            snapshot
-        }
-    }
-});
 ```
 
 ### Snapshots
@@ -160,7 +111,7 @@ It is possible to change the camera. First request all `videoinput` devices:
 const devices = camera.value?.devices(["videoinput"]);
 ```
 
-Pick a device, i.e. with a dropdown and pass the device ID to the `changeCamera` function:
+Pick a device, e.g. with a dropdown, and pass the device ID to the `changeCamera` function:
 ```ts
 const device = devices[0];
 camera.value?.changeCamera(device.deviceId);
@@ -190,6 +141,45 @@ camera.value?.changeCamera(device.deviceId);
 |   snapshot   | `resolution: Resolution`, `type: string`, `quality: number` | Creates a snapshot of the current video image                         |
 
 #### Events
+The `Camera` component emits 7 different events.
+```vue
+<template>
+    <camera
+        @loading="loading"
+        @started="started"
+        @stopped="stopped"
+        @paused="paused"
+        @resumed="resumed"
+        @camera-change="cameraChange"
+        @snapshot="snapshot"
+    ></camera>
+</template>
+
+<script lang="ts">
+import Camera from "simple-vue-camera-test";
+
+export default defineComponent({
+    setup() {
+        const loading = () => console.log("Camera is loading and will start any second");
+        const started = () => console.log("Camera has started");
+        const stopped = () => console.log("Camera has stopped");
+        const paused = () => console.log("Video feed has paused");
+        const resumed = () => console.log("Video feed has resumed");
+        const cameraChange = (deviceID: string) => console.log(`Camera has been changed to ${deviceID}`);
+        const snapshot = (blob: Blob) => console.log("A snapshot has been taken");
+        
+        return {
+            loading,
+            started,
+            stopped,
+            paused,
+            resumed,
+            cameraChange,
+            snapshot
+        }
+    }
+});
+```
 
 | Name          | Parameters         | Description                                      |
 |:-------------:|:------------------:|--------------------------------------------------|
@@ -200,3 +190,8 @@ camera.value?.changeCamera(device.deviceId);
 | resumed       |                    | Emitted when the video has resumed               |
 | camera-change | `deviceID: string` | Emitted when a camera change occurs              |
 | snapshot      | `blob: Blob`       | Emitted when a snapshot is taken                 |
+
+## Licence
+simple-vue-camera is available under the MIT licence. See the LICENCE for more info.
+
+[![Stargazers repo roster for @BastiaanJansen/simple-vue-camera](https://reporoster.com/stars/BastiaanJansen/simple-vue-camera)](https://github.com/BastiaanJansen/simple-vue-camera/stargazers)
