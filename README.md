@@ -73,7 +73,7 @@ To create screenshots of the video feed, use the `snapshot` function on the comp
 </template>
 
 <script lang="ts">
-import Camera from "simple-vue-camera-test";
+import Camera from "simple-vue-camera";
 
 export default defineComponent({
     setup() {
@@ -156,7 +156,7 @@ The `Camera` component emits 7 different events.
 </template>
 
 <script lang="ts">
-import Camera from "simple-vue-camera-test";
+import Camera from "simple-vue-camera";
 
 export default defineComponent({
     setup() {
