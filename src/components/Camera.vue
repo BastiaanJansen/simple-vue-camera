@@ -12,7 +12,8 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, onUnmounted, PropType, ref } from "vue";
-import { MediaDeviceKind, Resolution } from "./index";
+import { MediaDeviceKind } from "./media-device-kind";
+import { Resolution } from "./resolution";
 
 export default defineComponent({
     name: "Camera",
@@ -29,6 +30,7 @@ export default defineComponent({
     props: {
         resolution: {
             type: Object as PropType<Resolution>,
+            
             default: () => {
                 return { width: 1920, height: 1080 };
             },
