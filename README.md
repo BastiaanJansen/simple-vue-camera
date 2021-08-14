@@ -82,7 +82,7 @@ export default defineComponent({
         
         // Use camera reference to call functions
         const snapshot = async () => {
-            const blob = camera.value?.snapshot();
+            const blob = await camera.value?.snapshot();
             
             // To show the screenshot with an image tag, create a url
             const url = URL.createObjectURL(blob);
@@ -97,12 +97,12 @@ export default defineComponent({
 
 By default, when creating a snapshot, the resolution of the snapshot will be the same as the resolution of the camera feed. To change that, pass a `Resolution` with the function call:
 ```ts
-const blob = camera.value?.snapshot({ width: 1920, height: 1080 });
+const blob = await camera.value?.snapshot({ width: 1920, height: 1080 });
 ```
 
 Or change the image type and quality:
 ```ts
-const blob = camera.value?.snapshot({ width: 1920, height: 1080 }, "image/png", 0.5);
+const blob = await camera.value?.snapshot({ width: 1920, height: 1080 }, "image/png", 0.5);
 ```
 
 ### Camera
