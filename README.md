@@ -6,18 +6,179 @@
 
 A simple to use, but extensive, camera component for Vue 3 with Typescript support.
 
+## Table of Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Basics](#basics)
+    * [Snapshots](#snapshots)
+    * [Camera](#camera)
+
 ## Installation
+
+After installation, you can register the `Camera` component globally in `main.ts`:
+
+```ts
+import { createApp } from "vue";
+import App from "./App.vue";
+import Camera from "simple-vue-camera";
+
+
+createApp(App).component("camera", Camera).mount("#app");
+```
+
+or, register it to a specific component:
+
+```vue
+<script lang="ts">
+import { defineComponent } from "vue";
+import Camera from "simple-vue-camera";
+
+export default defineComponent({
+    components: {
+        Camera,
+    },
+});
+```
 
 ## Usage
 
-### Properties
+### Basics
+
+After registering the `Camera` component, you can use it as follows: 
+
+```vue
+<template>
+    <camera :resolution="{ width: 375, height: 812 }" autoplay></camera>
+</template>
+
+<script lang="ts">
+import Camera from "simple-vue-camera-test";
+
+export default defineComponent({
+    setup() {
+        // Get a reference of the component
+        const camera = ref<InstanceType<typeof Camera>>();
+        
+        // Use camera reference to call functions
+        const snapshot = async () => {
+            const blob = camera.value?.snapshot();
+            const url = URL.createObjectURL(blob);
+        }
+        
+        return {
+            camera
+        }
+    }
+});
+```
+The `Camera` component emits 7 different events.
+```vue
+<template>
+    <camera
+        @loading="loading"
+        @started="started"
+        @stopped="stopped"
+        @paused="paused"
+        @resumed="resumed"
+        @camera-change="cameraChange"
+        @snapshot="snapshot"
+    ></camera>
+</template>
+
+<script lang="ts">
+import Camera from "simple-vue-camera-test";
+
+export default defineComponent({
+    setup() {
+        const loading = () => console.log("Camera is loading and will start any second");
+        const started = () => console.log("Camera has started");
+        const stopped = () => console.log("Camera has stopped");
+        const paused = () => console.log("Video feed has paused");
+        const resumed = () => console.log("Video feed has resumed");
+        const cameraChange = (deviceID: string) => console.log(`Camera has been changed to ${deviceID}`);
+        const snapshot = (blob: Blob) => console.log("A snapshot has been taken");
+        
+        return {
+            loading,
+            started,
+            stopped,
+            paused,
+            resumed,
+            cameraChange,
+            snapshot
+        }
+    }
+});
+```
+
+### Snapshots
+To create screenshots of the video feed, use the `snapshot` function on the component reference:
+
+```vue
+<template>
+    <camera :resolution="{ width: 375, height: 812 }" ref="camera" autoplay></camera>
+    <button @click="snapshot">Create snapshot</button>
+</template>
+
+<script lang="ts">
+import Camera from "simple-vue-camera-test";
+
+export default defineComponent({
+    setup() {
+        // Get a reference of the component
+        const camera = ref<InstanceType<typeof Camera>>();
+        
+        // Use camera reference to call functions
+        const snapshot = async () => {
+            const blob = camera.value?.snapshot();
+            
+            // To show the screenshot with an image tag, create a url
+            const url = URL.createObjectURL(blob);
+        }
+        
+        return {
+            camera
+        }
+    }
+});
+```
+
+By default, when creating a snapshot, the resolution of the snapshot will be the same as the resolution of the camera feed. To change that, pass a `Resolution` with the function call:
+```ts
+const blob = camera.value?.snapshot({ width: 1920, height: 1080 });
+```
+
+Or change the image type and quality:
+```ts
+const blob = camera.value?.snapshot({ width: 1920, height: 1080 }, "image/png", 0.5);
+```
+
+### Camera
+It is possible to change the camera. First request all `videoinput` devices:
+```ts
+const devices = camera.value?.devices(["videoinput"]);
+```
+
+Pick a device, i.e. with a dropdown and pass the device ID to the `changeCamera` function:
+```ts
+const device = devices[0];
+camera.value?.changeCamera(device.deviceId);
+```
+
+**Note:** When switching cameras, the camera component will restart and emit the `loading` and `started` events again.
+
+### Component information
+
+#### Properties
 |     Name    |           Type           | Default     | Description                                                                                                                   |
 |:-----------:|:------------------------:|-------------|-------------------------------------------------------------------------------------------------------------------------------|
 |  resolution |       `Resolution`       | 1920 x 1080 | The resolution of the camera view                                                                                             |
 |  facingMode |         `string`         | environment |                                                                                                                               |
 |   autoplay  |         `boolean`        | `true`      | Determines if the camera is automatically started when mounted, when set to false, you must start the camera programmatically |
 | constraints | `MediaStreamConstraints` |             | Change the default constraints                                                                                                |
-### Functions
+
+#### Functions
 |     Name     |                          Parameters                         | Description                                                           |
 |:------------:|:-----------------------------------------------------------:|-----------------------------------------------------------------------|
 |    devices   |                  `kinds: MediaDeviceKind[]`                 | Returns a list of compatible devices which matches the allowed kinds  |
@@ -28,7 +189,7 @@ A simple to use, but extensive, camera component for Vue 3 with Typescript suppo
 | changeCamera |                           `deviceID: string`                          | Changes the selected camera                                           |
 |   snapshot   | `resolution: Resolution`, `type: string`, `quality: number` | Creates a snapshot of the current video image                         |
 
-### Events
+#### Events
 
 | Name          | Parameters         | Description                                      |
 |:-------------:|:------------------:|--------------------------------------------------|
