@@ -89,7 +89,8 @@ export default defineComponent({
         }
         
         return {
-            camera
+            camera,
+            snapshot
         }
     }
 });
