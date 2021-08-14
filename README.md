@@ -1,4 +1,10 @@
-# simple-vue-camera
+# Simple Vue Camera
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7d9578d39b5e4736be10095914541a07)](https://www.codacy.com/gh/BastiaanJansen/simple-vue-camera/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BastiaanJansen/simple-vue-camera&amp;utm_campaign=Badge_Grade)
+![](https://img.shields.io/github/license/BastiaanJansen/simple-vue-camera)
+![](https://img.shields.io/github/issues/BastiaanJansen/simple-vue-camera)
+
+A simple to use, but extensive, camera component for Vue 3 with Typescript support.
 
 ## Installation
 
