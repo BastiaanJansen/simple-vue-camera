@@ -1,6 +1,8 @@
 import vue from "rollup-plugin-vue";
 import ts from "rollup-plugin-typescript2";
 import css from "rollup-plugin-import-css";
+import resolve from "rollup-plugin-node-resolve";
+import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
 
 function createEntry(options) {
@@ -8,23 +10,20 @@ function createEntry(options) {
         input: "./src/index.ts",
         external: ["vue"],
         output: {
+            exports: "default",
             file: options.file,
             format: options.format,
             name: "SimpleVueCamera",
-            globals: {
-                vue: "vue",
-            },
         },
         plugins: [
-            ts({
-                tsconfigOverride: {
-                    compilerOptions: {
-                        declaration: true,
-                    },
-                },
+            vue({
+                css: true,
+                compileTemplate: true,
             }),
-            vue(),
+            ts(),
             css(),
+            resolve(),
+            terser(),
         ],
     };
 
@@ -33,15 +32,15 @@ function createEntry(options) {
 
 export default [
     createEntry({
-        format: "iife",
         file: pkg.browser,
+        format: "iife",
     }),
     createEntry({
-        format: "es",
         file: pkg.module,
+        format: "es",
     }),
     createEntry({
-        format: "cjs",
         file: pkg.main,
+        format: "cjs",
     }),
 ];

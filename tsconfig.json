@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "es5",
         "module": "esnext",
         "strict": true,
         "jsx": "preserve",
@@ -25,7 +25,10 @@
         "src/**/*.vue",
         "tests/**/*.ts",
         "tests/**/*.tsx",
-        "src/components/index.js"
-, "index.ts", "types/types.d.ts"    ],
+        "src/components/index.js",
+        "index.ts",
+        "types/types.d.ts",
+        "src/index.ts"
+    ],
     "exclude": ["node_modules"]
 }
