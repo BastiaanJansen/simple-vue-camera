@@ -4,15 +4,24 @@
     "private": false,
     "main": "./dist/simple-vue-camera.umd.js",
     "types": "dist",
+    "author": {
+        "name": "Bastiaan Jansen",
+        "email": "Bastiaanj7@outlook.com"
+    },
     "files": [
         "dist",
         "README.md"
     ],
+    "license": "MIT",
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
         "build-lib": "rollup -c rollup.config.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/BastiaanJansen/simple-vue-camera"
     },
     "dependencies": {},
     "devDependencies": {
