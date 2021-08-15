@@ -17,6 +17,16 @@ A simple to use, but extensive, camera component for Vue 3 with Typescript suppo
 
 ## Installation
 
+Install Simple Vue Camera with NPM:
+```
+npm install simple-vue-camera
+```
+
+or, with Yarn:
+```
+yarn install simple-vue-camera
+```
+
 After installation, you can register the `Camera` component globally in `main.ts`:
 
 ```ts
