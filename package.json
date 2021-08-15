@@ -23,6 +23,7 @@
         "type": "git",
         "url": "https://github.com/BastiaanJansen/simple-vue-camera"
     },
+    "description": "A simple to use, but extensive, camera component for Vue 3 with Typescript support to create great camera experiences.",
     "dependencies": {},
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.18.0",
