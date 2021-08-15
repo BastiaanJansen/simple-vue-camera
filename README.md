@@ -4,7 +4,9 @@
 ![](https://img.shields.io/github/license/BastiaanJansen/simple-vue-camera)
 ![](https://img.shields.io/github/issues/BastiaanJansen/simple-vue-camera)
 
-A simple to use, but extensive, camera component for Vue 3 with Typescript support.
+A simple to use, but extensive, camera component for Vue 3 with Typescript support to create great camera experiences.
+
+[![Demo CountPages alpha](https://media.giphy.com/media/UuAkrsLaxI5AXDwJuQ/giphy.gif)](https://media.giphy.com/media/UuAkrsLaxI5AXDwJuQ/giphy.gif)
 
 ## Table of Contents
 
