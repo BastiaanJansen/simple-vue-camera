@@ -26,6 +26,7 @@ export default defineComponent({
         "resumed",
         "camera-change",
         "snapshot",
+        "used-video-device",
     ],
     props: {
         resolution: {
