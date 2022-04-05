@@ -53,9 +53,8 @@ export default defineComponent({
                     "videoinput",
                 ]);
                 cameras.value = devices;
-                console.log(devices);
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
         });
 
