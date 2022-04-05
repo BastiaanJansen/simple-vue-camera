@@ -6,8 +6,7 @@
             @started="logEvent('started')"
             autoplay
         >
-            ksjdhks</camera
-        >
+        </camera>
     </div>
 
     <img :src="currentSnapshot" />
