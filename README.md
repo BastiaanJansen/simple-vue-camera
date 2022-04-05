@@ -167,7 +167,7 @@ The `Camera` component emits 8 different events.
         @resumed="resumed"
         @camera-change="cameraChange"
         @snapshot="snapshot"
-        @currentCamera="(deviceID: string) => (currentCamera(deviceID))"
+        @current-camera="currentCamera(deviceID)"
     ></camera>
 </template>
 
