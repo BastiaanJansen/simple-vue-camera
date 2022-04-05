@@ -156,7 +156,7 @@ camera.value?.changeCamera(device.deviceId);
 |   snapshot   | `resolution: Resolution`, `type: string`, `quality: number` | Creates a snapshot of the current video image                         |
 
 #### Events
-The `Camera` component emits 7 different events.
+The `Camera` component emits 8 different events.
 ```vue
 <template>
     <camera
@@ -167,6 +167,7 @@ The `Camera` component emits 7 different events.
         @resumed="resumed"
         @camera-change="cameraChange"
         @snapshot="snapshot"
+        @currentCamera="(deviceID: string) => (currentCamera(deviceID))"
     ></camera>
 </template>
 
@@ -182,6 +183,7 @@ export default defineComponent({
         const resumed = () => console.log("Video feed has resumed");
         const cameraChange = (deviceID: string) => console.log(`Camera has been changed to ${deviceID}`);
         const snapshot = (blob: Blob) => console.log("A snapshot has been taken");
+        const currentCamera = (deviceID: string) => console.log(`Currently using camera with id: ${deviceID}`)
         
         return {
             loading,
@@ -190,7 +192,8 @@ export default defineComponent({
             paused,
             resumed,
             cameraChange,
-            snapshot
+            snapshot,
+            currentCamera
         }
     }
 });
@@ -205,6 +208,7 @@ export default defineComponent({
 | resumed       |                    | Emitted when the video has resumed               |
 | camera-change | `deviceID: string` | Emitted when a camera change occurs              |
 | snapshot      | `blob: Blob`       | Emitted when a snapshot is taken                 |
+| currentCamera | `deviceID: string` | Emitted when a camera is in use                  |
 
 ## Licence
 simple-vue-camera is available under the MIT licence. See the LICENCE for more info.
