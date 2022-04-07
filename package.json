@@ -12,6 +12,14 @@
         "dist",
         "README.md"
     ],
+    "keywords": [
+        "vue",
+        "vuejs",
+        "vue-camera",
+        "camera-component",
+        "camera",
+        "webcam"
+    ],
     "license": "MIT",
     "scripts": {
         "serve": "vue-cli-service serve",
