@@ -48,10 +48,7 @@ export default defineComponent({
         onMounted(async () => {
             if (!camera.value) return;
             try {
-                const devices: MediaDeviceInfo[] = await camera.value.devices([
-                    "videoinput",
-                ]);
-                cameras.value = devices;
+                cameras.value = await camera.value.devices(["videoinput"]);
             } catch (e) {
                 console.error(e);
             }
@@ -66,7 +63,7 @@ export default defineComponent({
                 width: 1280,
                 height: 720,
             });
-            currentSnapshot.value = URL.createObjectURL(blob);
+            currentSnapshot.value = URL.createObjectURL(blob!);
         };
 
         const logEvent = (name: string) => console.log(name);
