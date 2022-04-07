@@ -26,6 +26,7 @@ export default defineComponent({
         "resumed",
         "camera-change",
         "snapshot",
+        "used-video-device",
     ],
     props: {
         resolution: {
@@ -75,6 +76,16 @@ export default defineComponent({
         ): Promise<MediaDeviceInfo[]> => {
             const devices = await navigator.mediaDevices.enumerateDevices();
             return devices.filter((device) => kinds.includes(device.kind));
+        };
+        
+        const currentDevice = (stream: MediaStream | undefined) => {
+            if (!stream) return;
+            const used_devices = stream
+                .getVideoTracks()
+                .map((track) => track.getSettings().deviceId);
+            if (used_devices.length === 1) {
+                emit("used-video-device", used_devices[0]);
+            }
         };
 
         const start = async (): Promise<void> => {
@@ -149,6 +160,7 @@ export default defineComponent({
             snapshot,
             canvas,
             devices,
+            currentDevice,
             pause,
             resume,
             changeCamera,
