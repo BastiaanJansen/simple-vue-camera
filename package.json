@@ -1,6 +1,6 @@
 {
     "name": "simple-vue-camera",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "private": false,
     "main": "./dist/simple-vue-camera.umd.js",
     "types": "dist",
