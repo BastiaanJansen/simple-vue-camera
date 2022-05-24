@@ -26,6 +26,7 @@ export default defineComponent({
         "resumed",
         "camera-change",
         "snapshot",
+        "error",
     ],
     props: {
         resolution: {
@@ -90,15 +91,19 @@ export default defineComponent({
         const start = async (): Promise<void> => {
             emit("loading");
 
-            stream.value = await navigator.mediaDevices.getUserMedia(
-                constraints
-            );
+            try {
+                stream.value = await navigator.mediaDevices.getUserMedia(
+                    constraints
+                );
 
-            if (!video.value) throw new Error("Video ref is null");
+                if (!video.value) throw new Error("Video ref is null");
 
-            video.value.srcObject = stream.value;
+                video.value.srcObject = stream.value;
 
-            emit("started");
+                emit("started");
+            } catch (err) {
+                emit("error", err);
+            }
         };
 
         const snapshot = (
