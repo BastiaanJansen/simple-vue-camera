@@ -184,6 +184,7 @@ The `Camera` component emits 7 different events.
         @resumed="resumed"
         @camera-change="cameraChange"
         @snapshot="snapshot"
+        @error="error"
     ></camera>
 </template>
 
@@ -199,6 +200,7 @@ export default defineComponent({
         const resumed = () => console.log("Video feed has resumed");
         const cameraChange = (deviceID: string) => console.log(`Camera has been changed to ${deviceID}`);
         const snapshot = (blob: Blob) => console.log("A snapshot has been taken");
+        const error = (error: Error) => console.log("error);
 
         return {
             loading,
@@ -207,7 +209,8 @@ export default defineComponent({
             paused,
             resumed,
             cameraChange,
-            snapshot
+            snapshot,
+            error
         }
     }
 });
@@ -222,6 +225,7 @@ export default defineComponent({
 |    resumed    |                    | Emitted when the video has resumed               |
 | camera-change | `deviceID: string` | Emitted when a camera change occurs              |
 |   snapshot    |    `blob: Blob`    | Emitted when a snapshot is taken                 |
+|     error     |   `error: Error`   | Emitted when an error occurs                     |
 
 ## Licence
 
