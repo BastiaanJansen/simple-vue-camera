@@ -4,6 +4,7 @@
             ref="camera"
             @loading="logEvent('loading')"
             @started="logEvent('started')"
+            @error="(error) => logEvent('error: ' + error)"
             autoplay
         >
         </camera>
