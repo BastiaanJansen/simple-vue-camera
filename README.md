@@ -200,7 +200,7 @@ export default defineComponent({
         const resumed = () => console.log("Video feed has resumed");
         const cameraChange = (deviceID: string) => console.log(`Camera has been changed to ${deviceID}`);
         const snapshot = (blob: Blob) => console.log("A snapshot has been taken");
-        const error = (error: Error) => console.log("error);
+        const error = (error: Error) => console.log("error");
 
         return {
             loading,
