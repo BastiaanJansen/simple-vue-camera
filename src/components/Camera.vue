@@ -1,6 +1,6 @@
 <template>
     <div id="camera-container">
-        <video ref="video" id="video"></video>
+        <video autoplay ref="video" id="video"></video>
 
         <div id="slot-container">
             <slot></slot>
@@ -62,10 +62,7 @@ export default defineComponent({
                 videoElement.setAttribute("playsinline", "");
             }
 
-            if (props.autoplay && videoElement) {
-                videoElement.setAttribute("autoplay", "");
-                start();
-            }
+            if (props.autoplay) start();
         });
 
         onUnmounted(() => stop());
