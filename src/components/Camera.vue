@@ -1,12 +1,11 @@
 <template>
     <div id="camera-container">
-        <video autoplay ref="video" id="video"></video>
+        <video ref="video" id="video"></video>
 
         <div id="slot-container">
             <slot></slot>
         </div>
     </div>
-
     <canvas ref="canvas" id="canvas"></canvas>
 </template>
 
@@ -41,7 +40,11 @@ export default defineComponent({
         },
         autoplay: {
             type: Boolean,
-            default: false,
+            default: true,
+        },
+        playsinline: {
+            type: Boolean,
+            default: true,
         },
         constraints: {
             type: Object,
@@ -52,7 +55,17 @@ export default defineComponent({
         onMounted(() => {
             if (!navigator.mediaDevices)
                 throw new Error("Media devices not available");
-            if (props.autoplay) start();
+
+            const videoElement = document.getElementById("video");
+
+            if (props.playsinline && videoElement) {
+                videoElement.setAttribute("playsinline", "");
+            }
+
+            if (props.autoplay && videoElement) {
+                videoElement.setAttribute("autoplay", "");
+                start();
+            }
         });
 
         onUnmounted(() => stop());
