@@ -6,7 +6,6 @@
             <slot></slot>
         </div>
     </div>
-
     <canvas ref="canvas" id="canvas"></canvas>
 </template>
 
@@ -41,7 +40,11 @@ export default defineComponent({
         },
         autoplay: {
             type: Boolean,
-            default: false,
+            default: true,
+        },
+        playsinline: {
+            type: Boolean,
+            default: true,
         },
         constraints: {
             type: Object,
@@ -52,6 +55,13 @@ export default defineComponent({
         onMounted(() => {
             if (!navigator.mediaDevices)
                 throw new Error("Media devices not available");
+
+            const videoElement = document.getElementById("video");
+
+            if (props.playsinline && videoElement) {
+                videoElement.setAttribute("playsinline", "");
+            }
+
             if (props.autoplay) start();
         });
 

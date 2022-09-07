@@ -150,12 +150,13 @@ camera.value?.changeCamera(device.deviceId);
 
 #### Properties
 
-|    Name     |           Type           | Default     | Description                                                                                                                   |
-| :---------: | :----------------------: | ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| resolution  |       `Resolution`       | 1920 x 1080 | The resolution of the camera view                                                                                             |
-| facingMode  |         `string`         | environment |                                                                                                                               |
-|  autoplay   |        `boolean`         | `true`      | Determines if the camera is automatically started when mounted, when set to false, you must start the camera programmatically |
-| constraints | `MediaStreamConstraints` |             | Change the default constraints                                                                                                |
+|    Name     |           Type           | Default     | Description                                                                                                                           |
+| :---------: | :----------------------: | ----------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| resolution  |       `Resolution`       | 1920 x 1080 | The resolution of the camera view                                                                                                     |
+| facingMode  |         `string`         | environment |                                                                                                                                       |
+|  autoplay   |        `boolean`         | `true`      | Determines if the camera is automatically started when mounted, when set to false, you must start the camera programmatically         |
+| playsinline |        `boolean`         | `true`      | Determines if the camera plays inline instead of starting full screen, when set to false some browsers open a fullscreen video player |
+| constraints | `MediaStreamConstraints` |             | Change the default constraints                                                                                                        |
 
 #### Functions
 
