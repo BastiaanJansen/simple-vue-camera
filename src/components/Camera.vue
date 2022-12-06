@@ -145,11 +145,12 @@ export default defineComponent({
             });
         };
 
-        const changeCamera = (deviceID: string): void => {
+        const changeCamera = async (deviceID: string): Promise<void> => {
             stop();
             constraints.video.deviceId.exact = deviceID;
-            start();
+            await start();
             emit("camera-change", deviceID);
+            return;
         };
 
         const resume = (): void => {
