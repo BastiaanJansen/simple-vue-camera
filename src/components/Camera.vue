@@ -150,7 +150,6 @@ export default defineComponent({
             constraints.video.deviceId.exact = deviceID;
             await start();
             emit("camera-change", deviceID);
-            return;
         };
 
         const resume = (): void => {
