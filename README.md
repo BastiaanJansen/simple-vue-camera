@@ -30,7 +30,7 @@ npm install simple-vue-camera
 or, with Yarn:
 
 ```
-yarn install simple-vue-camera
+yarn add simple-vue-camera
 ```
 
 After installation, you can register the `Camera` component globally in `main.ts`:
